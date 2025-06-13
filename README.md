@@ -13,8 +13,6 @@ A lightweight, customizable Web Component for implementing "Load More" paginatio
 - Configurable content selectors
 - Built-in loading state management
 - Custom events for integration
-- Accessible by default
-- Progressive enhancement ready
 
 ## Installation
 
@@ -24,7 +22,7 @@ npm install @magic-spells/load-content
 
 ```javascript
 // Add to your JavaScript file
-import "@magic-spells/load-content";
+import '@magic-spells/load-content';
 ```
 
 Or include directly in your HTML:
@@ -49,8 +47,7 @@ Or include directly in your HTML:
   data-has-next-page="true"
   data-url="/products"
   data-targets="#product-grid"
-  data-append-filter=".product"
->
+  data-append-filter=".product">
   Load More Products
 </load-content>
 ```
@@ -80,9 +77,7 @@ Configure the component using data attributes:
 You can load content into multiple containers simultaneously:
 
 ```html
-<load-content
-  data-targets="#product-grid, #sidebar-recommendations, .related-items"
->
+<load-content data-targets="#product-grid, #sidebar-recommendations, .related-items">
   Load More
 </load-content>
 ```
@@ -126,18 +121,14 @@ When a filter is specified, only children matching the selector will be appended
 
 ```html
 <!-- Only append elements with specific data attributes -->
-<load-content data-append-filter="[data-type='product']"
-  >Load More</load-content
->
+<load-content data-append-filter="[data-type='product']">Load More</load-content>
 ```
 
 **Complex selector filtering:**
 
 ```html
 <!-- Only append visible products that aren't featured -->
-<load-content data-append-filter=".product:not(.featured):not(.hidden)"
-  >Load More</load-content
->
+<load-content data-append-filter=".product:not(.featured):not(.hidden)">Load More</load-content>
 ```
 
 **Multiple element types:**
@@ -161,13 +152,9 @@ By default, new content is **appended** to existing containers. However, you can
 </div>
 
 <!-- Status message gets swapped out completely -->
-<div id="status-message" data-load-content="swap">
-  Showing 12 of 86 products
-</div>
+<div id="status-message" data-load-content="swap">Showing 12 of 86 products</div>
 
-<load-content data-targets="#product-grid, #status-message">
-  Load More
-</load-content>
+<load-content data-targets="#product-grid, #status-message"> Load More </load-content>
 ```
 
 When the next page loads:
@@ -191,13 +178,13 @@ This is perfect for:
 Resets the component state, useful after filtering or searching:
 
 ```javascript
-const loadMore = document.querySelector("load-content");
+const loadMore = document.querySelector('load-content');
 
 // Reset to first page
 loadMore.reset({
   currentPage: 1,
   hasNextPage: true,
-  url: "/products?category=electronics",
+  url: '/products?category=electronics',
 });
 ```
 
@@ -217,8 +204,8 @@ The component fires custom events that you can listen to:
 Fired after new content is successfully loaded and appended:
 
 ```javascript
-loadMore.addEventListener("onContentLoaded", (e) => {
-  console.log("New content loaded!", e.detail);
+loadMore.addEventListener('onContentLoaded', (e) => {
+  console.log('New content loaded!', e.detail);
   // e.detail contains: document, itemsShown, currentPage
 
   // Re-initialize any JavaScript on new content
@@ -231,8 +218,8 @@ loadMore.addEventListener("onContentLoaded", (e) => {
 Fired when the component is reset:
 
 ```javascript
-loadMore.addEventListener("onReset", (e) => {
-  console.log("Component reset", e.detail);
+loadMore.addEventListener('onReset', (e) => {
+  console.log('Component reset', e.detail);
   // e.detail contains: currentPage, hasNextPage, itemsShown
 });
 ```
@@ -270,8 +257,7 @@ Your server should:
       data-has-next-page="true"
       data-url="/products"
       data-targets="#product-grid"
-      data-append-filter=".product"
-    >
+      data-append-filter=".product">
       Load More Products
     </load-content>
   </body>
@@ -283,12 +269,12 @@ Your server should:
 ### Dynamic Filtering
 
 ```javascript
-const loadMore = document.querySelector("load-content");
-const filterSelect = document.querySelector("#category-filter");
+const loadMore = document.querySelector('load-content');
+const filterSelect = document.querySelector('#category-filter');
 
-filterSelect.addEventListener("change", () => {
+filterSelect.addEventListener('change', () => {
   // Clear existing content
-  document.querySelector("#product-grid").innerHTML = "";
+  document.querySelector('#product-grid').innerHTML = '';
 
   // Reset load-content component
   loadMore.reset({
@@ -305,23 +291,23 @@ filterSelect.addEventListener("change", () => {
 ### Integration with Search
 
 ```javascript
-const searchForm = document.querySelector("#search-form");
-const loadMore = document.querySelector("load-content");
+const searchForm = document.querySelector('#search-form');
+const loadMore = document.querySelector('load-content');
 
-searchForm.addEventListener("submit", async (e) => {
+searchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(searchForm);
-  const searchQuery = formData.get("q");
+  const searchQuery = formData.get('q');
 
   // Fetch first page of results
   const response = await fetch(`/search?q=${searchQuery}`);
   const html = await response.text();
 
   // Update page content
-  document.querySelector("#results").innerHTML = new DOMParser()
-    .parseFromString(html, "text/html")
-    .querySelector("#results").innerHTML;
+  document.querySelector('#results').innerHTML = new DOMParser()
+    .parseFromString(html, 'text/html')
+    .querySelector('#results').innerHTML;
 
   // Reset load-content for new search
   loadMore.reset({
@@ -361,7 +347,7 @@ load-content[disabled] {
 
 /* Loading state styling */
 load-content[disabled]::after {
-  content: " Loading...";
+  content: ' Loading...';
 }
 ```
 
