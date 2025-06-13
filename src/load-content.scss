@@ -1,0 +1,14 @@
+// Load more component - minimal base styles
+// Most users will add their own button class styling
+
+load-content {
+  // Just basic display and cursor
+  display: inline-block;
+  cursor: pointer;
+
+  // Disabled state
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

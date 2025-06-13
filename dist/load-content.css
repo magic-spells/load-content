@@ -1,0 +1,8 @@
+load-content {
+  display: inline-block;
+  cursor: pointer;
+}
+load-content[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

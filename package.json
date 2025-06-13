@@ -1,0 +1,78 @@
+{
+  "name": "@magic-spells/load-content",
+  "version": "0.1.0",
+  "description": "A lightweight, customizable Web Component for loading and swapping content with optional pagination",
+  "type": "module",
+  "main": "dist/load-content.cjs.js",
+  "module": "dist/load-content.esm.js",
+  "unpkg": "dist/load-content.min.js",
+  "style": "dist/load-content.min.css",
+  "sass": "dist/load-content.scss",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "serve": "rollup -c -w",
+    "lint": "eslint src/ rollup.config.mjs eslint.config.mjs",
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "web-components",
+    "content-loading",
+    "pagination",
+    "load-more",
+    "content-swap",
+    "progressive-enhancement",
+    "vanilla-js",
+    "no-dependencies"
+  ],
+  "author": "Magic Spells",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/magic-spells/load-content.git"
+  },
+  "bugs": {
+    "url": "https://github.com/magic-spells/load-content/issues"
+  },
+  "homepage": "https://magic-spells.github.io/load-content/demo/",
+  "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "^8.0.0",
+    "globals": "^13.24.0",
+    "prettier": "^3.3.3",
+    "rollup": "^3.0.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^1.1.1",
+    "sass": "^1.86.3"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/load-content.esm.js",
+      "require": "./dist/load-content.cjs.js",
+      "default": "./dist/load-content.esm.js"
+    },
+    "./css": "./dist/load-content.css",
+    "./css/min": "./dist/load-content.min.css",
+    "./scss": "./dist/load-content.scss"
+  },
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ]
+}

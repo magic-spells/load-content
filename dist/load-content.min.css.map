@@ -1,0 +1,1 @@
+{"version":3,"sources":["load-content.scss"],"names":[],"mappings":"AAAA,aAEE,cAAe,CADf,oBAEF,CACA,uBACE,kBAAmB,CACnB,UACF","file":"load-content.min.css","sourcesContent":["load-content {\n  display: inline-block;\n  cursor: pointer;\n}\nload-content[disabled] {\n  cursor: not-allowed;\n  opacity: 0.6;\n}"]}

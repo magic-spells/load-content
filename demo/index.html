@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Load Content Web Component Demo</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .demo-section {
+        margin-bottom: 60px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+
+      .demo-section h2 {
+        color: #34495e;
+        margin-top: 0;
+      }
+
+      /* Product Grid Styles */
+      #product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .product {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .product:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .product h3 {
+        margin: 0 0 10px 0;
+        color: #2c3e50;
+      }
+
+      .product .price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #e74c3c;
+      }
+
+      /* Article List Styles */
+      #article-list {
+        margin-bottom: 30px;
+      }
+
+      .article {
+        background: white;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #3498db;
+      }
+
+      .article h3 {
+        margin: 0 0 10px 0;
+        color: #2c3e50;
+      }
+
+      .article .date {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .article p {
+        margin: 0;
+        color: #555;
+      }
+
+      /* Custom load-content styling for demo */
+      load-content {
+        border-radius: 25px !important;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 100%
+        ) !important;
+        padding: 12px 30px !important;
+        color: white;
+        font-weight: 500;
+      }
+
+      load-content:hover:not([disabled]) {
+        background: linear-gradient(
+          135deg,
+          #764ba2 0%,
+          #667eea 100%
+        ) !important;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4) !important;
+      }
+
+      /* Multi-column Demo Styles */
+      .multi-column {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      #main-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #sidebar {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-item {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border-left: 3px solid #667eea;
+      }
+
+      .sidebar-item {
+        background: #fff3cd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border-left: 3px solid #ffc107;
+        font-size: 14px;
+      }
+
+      /* Status Display */
+      .status {
+        background: #d4edda;
+        color: #155724;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin: 20px 0;
+        border: 1px solid #c3e6cb;
+      }
+
+      .controls {
+        margin: 20px 0;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 6px;
+      }
+
+      .controls button {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      .controls button:hover {
+        background: #5a6268;
+      }
+
+      @media (max-width: 768px) {
+        .multi-column {
+          grid-template-columns: 1fr;
+        }
+
+        #product-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Load Content Web Component Demo</h1>
+
+    <!-- Basic Product Grid Demo -->
+    <div class="demo-section">
+      <h2>🛍️ Product Grid Example</h2>
+      <p>A typical e-commerce product grid with load more functionality.</p>
+
+      <div id="product-grid">
+        <div class="product">
+          <h3>Wireless Headphones</h3>
+          <p>Premium quality sound</p>
+          <div class="price">$99.99</div>
+        </div>
+        <div class="product">
+          <h3>Smart Watch</h3>
+          <p>Track your fitness goals</p>
+          <div class="price">$249.99</div>
+        </div>
+        <div class="product">
+          <h3>Laptop Stand</h3>
+          <p>Ergonomic design</p>
+          <div class="price">$49.99</div>
+        </div>
+        <div class="product">
+          <h3>USB-C Hub</h3>
+          <p>7-in-1 connectivity</p>
+          <div class="price">$79.99</div>
+        </div>
+      </div>
+
+      <load-content
+        id="product-loader"
+        data-mode="append"
+        data-current-page="1"
+        data-has-next-page="true"
+        data-url="/demo-products"
+        data-targets="#product-grid"
+        data-append-filter=".product"
+      >
+        Load More Products
+      </load-content>
+
+      <div class="status" id="product-status">
+        Products loaded: <span id="product-count">4</span> / 20
+      </div>
+    </div>
+
+    <!-- Article List Demo -->
+    <div class="demo-section">
+      <h2>📰 Article List Example</h2>
+      <p>A blog-style article list with progressive loading.</p>
+
+      <div id="article-list">
+        <article class="article">
+          <h3>Getting Started with Web Components</h3>
+          <div class="date">March 15, 2025</div>
+          <p>
+            Learn how to create reusable custom elements that work across all
+            modern browsers...
+          </p>
+        </article>
+        <article class="article">
+          <h3>Modern CSS Grid Layouts</h3>
+          <div class="date">March 10, 2025</div>
+          <p>
+            Discover the power of CSS Grid for creating complex, responsive
+            layouts with ease...
+          </p>
+        </article>
+        <article class="article">
+          <h3>JavaScript Performance Tips</h3>
+          <div class="date">March 5, 2025</div>
+          <p>
+            Optimize your JavaScript code for better performance and user
+            experience...
+          </p>
+        </article>
+      </div>
+
+      <load-content
+        id="article-loader"
+        data-mode="append"
+        data-current-page="1"
+        data-has-next-page="true"
+        data-url="/demo-articles"
+        data-targets="#article-list"
+      >
+        Load More Articles
+      </load-content>
+
+      <div class="status" id="article-status">
+        Articles loaded: <span id="article-count">3</span> / 15
+      </div>
+    </div>
+
+    <!-- Multi-Column Demo -->
+    <div class="demo-section">
+      <h2>🏗️ Multi-Column Example</h2>
+      <p>Loading content into multiple containers simultaneously.</p>
+
+      <div class="multi-column">
+        <div id="main-content">
+          <h3>Main Content</h3>
+          <div class="content-item">
+            <h4>Feature Article</h4>
+            <p>
+              This is the main content area where primary articles are
+              displayed.
+            </p>
+          </div>
+          <div class="content-item">
+            <h4>Product Review</h4>
+            <p>Detailed reviews and comparisons of the latest products.</p>
+          </div>
+        </div>
+
+        <div id="sidebar">
+          <h3>Sidebar</h3>
+          <div class="sidebar-item">
+            <strong>Quick Tip:</strong> Use semantic HTML elements for better
+            accessibility.
+          </div>
+          <div class="sidebar-item">
+            <strong>Did You Know:</strong> CSS Grid has excellent browser
+            support now.
+          </div>
+        </div>
+      </div>
+
+      <load-content
+        id="multi-loader"
+        data-mode="append"
+        data-current-page="1"
+        data-has-next-page="true"
+        data-url="/demo-multi"
+        data-targets="#main-content, #sidebar"
+      >
+        Load More Content
+      </load-content>
+
+      <div class="status" id="multi-status">
+        Content sections loaded: <span id="multi-count">2</span> / 12
+      </div>
+    </div>
+
+    <!-- Interactive Controls Demo -->
+    <div class="demo-section">
+      <h2>⚙️ Interactive Controls</h2>
+      <p>Demonstrate the JavaScript API for dynamic control.</p>
+
+      <div class="controls">
+        <button onclick="resetProductLoader()">Reset Product Loader</button>
+        <button onclick="simulateFilter()">Simulate Filter Change</button>
+        <button onclick="showLoaderState()">Show Loader State</button>
+      </div>
+
+      <div class="status" id="control-status">
+        Click the buttons above to interact with the load-content components.
+      </div>
+    </div>
+
+    <link rel="stylesheet" href="load-content.min.css" />
+    <script type="module" src="load-content.esm.js"></script>
+    <script>
+      // Demo functionality - simulates server responses
+      let productPage = 1;
+      let articlePage = 1;
+      let multiPage = 1;
+
+      // Generate demo products
+      function generateProducts(page, count = 4) {
+        const products = [];
+        const startId = (page - 1) * count + 1;
+
+        for (let i = 0; i < count; i++) {
+          const id = startId + i;
+          products.push({
+            name: `Product ${id}`,
+            description: `Description for product ${id}`,
+            price: (Math.random() * 200 + 29.99).toFixed(2),
+          });
+        }
+        return products;
+      }
+
+      // Generate demo articles
+      function generateArticles(page, count = 3) {
+        const articles = [];
+        const startId = (page - 1) * count + 1;
+
+        for (let i = 0; i < count; i++) {
+          const id = startId + i;
+          articles.push({
+            title: `Article Title ${id}`,
+            date: `March ${Math.floor(Math.random() * 28) + 1}, 2025`,
+            excerpt: `This is the excerpt for article ${id}. It provides a brief overview of the content...`,
+          });
+        }
+        return articles;
+      }
+
+      // Simulate server responses
+      async function simulateServer(url) {
+        // Extract page number from URL
+        const urlObj = new URL(url, window.location.origin);
+        const page = parseInt(urlObj.searchParams.get("page")) || 1;
+
+        // Simulate network delay
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500 + Math.random() * 1000),
+        );
+
+        if (url.includes("demo-products")) {
+          const products = generateProducts(page);
+          return createProductResponse(products, page);
+        } else if (url.includes("demo-articles")) {
+          const articles = generateArticles(page);
+          return createArticleResponse(articles, page);
+        } else if (url.includes("demo-multi")) {
+          return createMultiResponse(page);
+        }
+
+        throw new Error("Unknown demo URL");
+      }
+
+      function createProductResponse(products, page) {
+        const hasNext = page < 5; // 5 pages total
+        console.log(`Creating product response for page ${page}, hasNext: ${hasNext}`);
+
+        let html = '<div id="product-grid">';
+        products.forEach((product) => {
+          html += `
+          <div class="product">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <div class="price">$${product.price}</div>
+          </div>
+        `;
+        });
+        html += "</div>";
+        
+        // Include updated load-content element with hasNextPage status
+        html += `
+        <load-content
+          data-current-page="${page}"
+          data-has-next-page="${hasNext}"
+          data-url="/demo-products"
+          data-targets="#product-grid"
+        >
+          Load More Products
+        </load-content>`;
+
+        console.log('Generated HTML:', html);
+        return html;
+      }
+
+      function createArticleResponse(articles, page) {
+        const hasNext = page < 5; // 5 pages total
+
+        let html = '<div id="article-list">';
+        articles.forEach((article) => {
+          html += `
+          <article class="article">
+            <h3>${article.title}</h3>
+            <div class="date">${article.date}</div>
+            <p>${article.excerpt}</p>
+          </article>
+        `;
+        });
+        html += "</div>";
+        
+        // Include updated load-content element with hasNextPage status
+        html += `
+        <load-content
+          data-current-page="${page}"
+          data-has-next-page="${hasNext}"
+          data-url="/demo-articles"
+          data-targets="#article-list"
+        >
+          Load More Articles
+        </load-content>`;
+
+        return html;
+      }
+
+      function createMultiResponse(page) {
+        const hasNext = page < 6; // 6 pages total
+
+        return `
+        <div id="main-content">
+          <div class="content-item">
+            <h4>Main Article ${page}</h4>
+            <p>This is main content from page ${page}.</p>
+          </div>
+        </div>
+        <div id="sidebar">
+          <div class="sidebar-item">
+            <strong>Tip ${page}:</strong> Content from page ${page}.
+          </div>
+        </div>
+        <load-content
+          data-current-page="${page}"
+          data-has-next-page="${hasNext}"
+          data-url="/demo-multi"
+          data-targets="#main-content, #sidebar"
+        >
+          Load More Content
+        </load-content>
+      `;
+      }
+
+      // Override fetch for demo purposes
+      const originalFetch = window.fetch;
+      window.fetch = async function (url, options) {
+        if (url.includes("/demo-")) {
+          const response = await simulateServer(url);
+          return new Response(response, {
+            status: 200,
+            headers: { "Content-Type": "text/html" },
+          });
+        }
+        return originalFetch(url, options);
+      };
+
+      // Event listeners for status updates
+      document.addEventListener("DOMContentLoaded", () => {
+        const productLoader = document.getElementById("product-loader");
+        const articleLoader = document.getElementById("article-loader");
+        const multiLoader = document.getElementById("multi-loader");
+
+        // Update counters when content loads
+        productLoader.addEventListener("onContentLoaded", (e) => {
+          const count = document.querySelectorAll(
+            "#product-grid .product",
+          ).length;
+          document.getElementById("product-count").textContent = count;
+        });
+
+        articleLoader.addEventListener("onContentLoaded", (e) => {
+          const count = document.querySelectorAll(
+            "#article-list .article",
+          ).length;
+          document.getElementById("article-count").textContent = count;
+        });
+
+        multiLoader.addEventListener("onContentLoaded", (e) => {
+          const mainCount = document.querySelectorAll(
+            "#main-content .content-item",
+          ).length;
+          const sideCount = document.querySelectorAll(
+            "#sidebar .sidebar-item",
+          ).length;
+          document.getElementById("multi-count").textContent =
+            mainCount + sideCount;
+        });
+      });
+
+      // Interactive control functions
+      function resetProductLoader() {
+        const loader = document.getElementById("product-loader");
+        const grid = document.getElementById("product-grid");
+
+        // Clear existing products
+        grid.innerHTML = `
+        <div class="product">
+          <h3>Wireless Headphones</h3>
+          <p>Premium quality sound</p>
+          <div class="price">$99.99</div>
+        </div>
+        <div class="product">
+          <h3>Smart Watch</h3>
+          <p>Track your fitness goals</p>
+          <div class="price">$249.99</div>
+        </div>
+      `;
+
+        // Reset loader
+        loader.reset({
+          currentPage: 1,
+          hasNextPage: true,
+        });
+
+        document.getElementById("product-count").textContent = "2";
+        document.getElementById("control-status").textContent =
+          "Product loader reset to 2 items.";
+      }
+
+      function simulateFilter() {
+        const loader = document.getElementById("product-loader");
+
+        loader.reset({
+          currentPage: 1,
+          hasNextPage: true,
+          url: "/demo-products?category=electronics",
+        });
+
+        document.getElementById("control-status").textContent =
+          "Filter applied - Electronics category.";
+      }
+
+      function showLoaderState() {
+        const loader = document.getElementById("product-loader");
+        const state = {
+          currentPage: loader.currentPage,
+          hasNextPage: loader.hasNextPage,
+          itemsShown: loader.itemsShown,
+          isLoading: loader.isLoading,
+        };
+
+        document.getElementById("control-status").innerHTML =
+          "Current state: " +
+          JSON.stringify(state, null, 2)
+            .replace(/\n/g, "<br>")
+            .replace(/ /g, "&nbsp;");
+      }
+    </script>
+  </body>
+</html>
