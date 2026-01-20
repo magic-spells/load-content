@@ -249,4 +249,3 @@ class LoadContent extends HTMLElement {
 if (!customElements.get("load-content")) {
 	customElements.define("load-content", LoadContent);
 }
-//# sourceMappingURL=load-content.esm.js.map

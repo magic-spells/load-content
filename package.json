@@ -1,6 +1,6 @@
 {
   "name": "@magic-spells/load-content",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A lightweight, customizable Web Component for loading and swapping content with optional pagination",
   "author": "Cory Schulz @ Magic Spells",
   "type": "module",
