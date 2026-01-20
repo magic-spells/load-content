@@ -235,12 +235,12 @@
 
       <load-content
         id="product-loader"
-        data-mode="append"
-        data-current-page="1"
-        data-has-next-page="true"
-        data-url="/demo-products"
-        data-targets="#product-grid"
-        data-append-filter=".product"
+        mode="append"
+        current-page="1"
+        has-next-page="true"
+        url="/demo-products"
+        targets="#product-grid"
+        append-filter=".product"
       >
         Load More Products
       </load-content>
@@ -284,11 +284,11 @@
 
       <load-content
         id="article-loader"
-        data-mode="append"
-        data-current-page="1"
-        data-has-next-page="true"
-        data-url="/demo-articles"
-        data-targets="#article-list"
+        mode="append"
+        current-page="1"
+        has-next-page="true"
+        url="/demo-articles"
+        targets="#article-list"
       >
         Load More Articles
       </load-content>
@@ -334,11 +334,11 @@
 
       <load-content
         id="multi-loader"
-        data-mode="append"
-        data-current-page="1"
-        data-has-next-page="true"
-        data-url="/demo-multi"
-        data-targets="#main-content, #sidebar"
+        mode="append"
+        current-page="1"
+        has-next-page="true"
+        url="/demo-multi"
+        targets="#main-content, #sidebar"
       >
         Load More Content
       </load-content>
@@ -447,10 +447,10 @@
         // Include updated load-content element with hasNextPage status
         html += `
         <load-content
-          data-current-page="${page}"
-          data-has-next-page="${hasNext}"
-          data-url="/demo-products"
-          data-targets="#product-grid"
+          current-page="${page}"
+          has-next-page="${hasNext}"
+          url="/demo-products"
+          targets="#product-grid"
         >
           Load More Products
         </load-content>`;
@@ -477,10 +477,10 @@
         // Include updated load-content element with hasNextPage status
         html += `
         <load-content
-          data-current-page="${page}"
-          data-has-next-page="${hasNext}"
-          data-url="/demo-articles"
-          data-targets="#article-list"
+          current-page="${page}"
+          has-next-page="${hasNext}"
+          url="/demo-articles"
+          targets="#article-list"
         >
           Load More Articles
         </load-content>`;
@@ -504,10 +504,10 @@
           </div>
         </div>
         <load-content
-          data-current-page="${page}"
-          data-has-next-page="${hasNext}"
-          data-url="/demo-multi"
-          data-targets="#main-content, #sidebar"
+          current-page="${page}"
+          has-next-page="${hasNext}"
+          url="/demo-multi"
+          targets="#main-content, #sidebar"
         >
           Load More Content
         </load-content>

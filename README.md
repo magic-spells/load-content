@@ -43,11 +43,11 @@ Or include directly in your HTML:
 
 <!-- Load more button -->
 <load-content
-  data-current-page="1"
-  data-has-next-page="true"
-  data-url="/products"
-  data-targets="#product-grid"
-  data-append-filter=".product">
+  current-page="1"
+  has-next-page="true"
+  url="/products"
+  targets="#product-grid"
+  append-filter=".product">
   Load More Products
 </load-content>
 ```
@@ -62,32 +62,32 @@ Or include directly in your HTML:
 
 ## Configuration
 
-Configure the component using data attributes:
+Configure the component using attributes:
 
-| Attribute            | Description                                            | Default          |
-| -------------------- | ------------------------------------------------------ | ---------------- |
-| `data-current-page`  | Current page number (1-based)                          | 1                |
-| `data-has-next-page` | Whether more pages are available                       | false            |
-| `data-url`           | Base URL for pagination requests                       | Current page URL |
-| `data-targets`       | CSS selectors for content containers (comma-separated) | ""               |
-| `data-append-filter` | CSS selector to filter which children get appended     | ""               |
+| Attribute       | Description                                            | Default          |
+| --------------- | ------------------------------------------------------ | ---------------- |
+| `current-page`  | Current page number (1-based)                          | 1                |
+| `has-next-page` | Whether more pages are available                       | false            |
+| `url`           | Base URL for pagination requests                       | Current page URL |
+| `targets`       | CSS selectors for content containers (comma-separated) | ""               |
+| `append-filter` | CSS selector to filter which children get appended     | ""               |
 
 ### Multiple Content Selectors
 
 You can load content into multiple containers simultaneously:
 
 ```html
-<load-content data-targets="#product-grid, #sidebar-recommendations, .related-items">
+<load-content targets="#product-grid, #sidebar-recommendations, .related-items">
   Load More
 </load-content>
 ```
 
 ### Filtering Appended Content
 
-Use `data-append-filter` to specify which children from the server response should be appended. This is useful for filtering out unwanted elements or focusing on specific content types:
+Use `append-filter` to specify which children from the server response should be appended. This is useful for filtering out unwanted elements or focusing on specific content types:
 
 ```html
-<load-content data-targets="#product-grid" data-append-filter=".product-card">
+<load-content targets="#product-grid" append-filter=".product-card">
   Load More
 </load-content>
 ```
@@ -107,42 +107,42 @@ When a filter is specified, only children matching the selector will be appended
 
 ```html
 <!-- Only append elements with .product class -->
-<load-content data-append-filter=".product">Load More</load-content>
+<load-content append-filter=".product">Load More</load-content>
 ```
 
 **Custom web component filtering:**
 
 ```html
 <!-- Only append custom web components -->
-<load-content data-append-filter="product-card">Load More</load-content>
+<load-content append-filter="product-card">Load More</load-content>
 ```
 
 **Attribute-based filtering:**
 
 ```html
 <!-- Only append elements with specific data attributes -->
-<load-content data-append-filter="[data-type='product']">Load More</load-content>
+<load-content append-filter="[data-type='product']">Load More</load-content>
 ```
 
 **Complex selector filtering:**
 
 ```html
 <!-- Only append visible products that aren't featured -->
-<load-content data-append-filter=".product:not(.featured):not(.hidden)">Load More</load-content>
+<load-content append-filter=".product:not(.featured):not(.hidden)">Load More</load-content>
 ```
 
 **Multiple element types:**
 
 ```html
 <!-- Append articles and sections -->
-<load-content data-append-filter="article, section">Load More</load-content>
+<load-content append-filter="article, section">Load More</load-content>
 ```
 
 This filtering prevents unwanted elements like ads, tracking scripts, headers, content cards, or other items from being appended.
 
 ### Content Swapping vs Appending
 
-By default, new content is **appended** to existing containers. However, you can use `data-load-content="swap"` to **replace** content instead:
+By default, new content is **appended** to existing containers. However, you can use `data-load-content="swap"` on target containers to **replace** content instead:
 
 ```html
 <!-- Products get appended (default behavior) -->
@@ -154,7 +154,7 @@ By default, new content is **appended** to existing containers. However, you can
 <!-- Status message gets swapped out completely -->
 <div id="status-message" data-load-content="swap">Showing 12 of 86 products</div>
 
-<load-content data-targets="#product-grid, #status-message"> Load More </load-content>
+<load-content targets="#product-grid, #status-message"> Load More </load-content>
 ```
 
 When the next page loads:
@@ -231,7 +231,7 @@ Your server should:
 1. **Accept page parameter**: Handle `?page=2`, `?page=3`, etc.
 2. **Return full HTML**: The response should be a complete HTML document
 3. **Use same selectors**: Content containers should have the same CSS selectors as the original page
-4. **Update pagination data**: Update the load-content element's attributes in each response, especially `data-has-next-page="false"` on the final page
+4. **Update pagination data**: Update the load-content element's attributes in each response, especially `has-next-page="false"` on the final page
 
 ### Example Server Response
 
@@ -253,11 +253,11 @@ Your server should:
 
     <!-- Updated load-content button -->
     <load-content
-      data-current-page="2"
-      data-has-next-page="true"
-      data-url="/products"
-      data-targets="#product-grid"
-      data-append-filter=".product">
+      current-page="2"
+      has-next-page="true"
+      url="/products"
+      targets="#product-grid"
+      append-filter=".product">
       Load More Products
     </load-content>
   </body>

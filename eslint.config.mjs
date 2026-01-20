@@ -5,10 +5,11 @@ export default [
   {
     files: ['src/**/*.js'],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2024,
       sourceType: 'module',
       globals: {
         ...globals.browser,
+        ...globals.es2024,
       },
     },
     rules: {
@@ -18,10 +19,11 @@ export default [
   {
     files: ['rollup.config.mjs', 'eslint.config.mjs'],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2024,
       sourceType: 'module',
       globals: {
         ...globals.node,
+        ...globals.es2024,
       },
     },
     rules: {

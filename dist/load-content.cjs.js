@@ -52,20 +52,21 @@ class LoadContent extends HTMLElement {
 	/* --------------------------------------------------------------
 	 * attribute helpers
 	 * ---------------------------------------------------------- */
-	/** parses data- attributes into internal state */
+	/** parses attributes into internal state */
 	readAttributes() {
-		this.currentPage = Number(this.dataset.currentPage) || 1;
-		this.hasNextPage = this.dataset.hasNextPage === "true";
-		this.baseUrl = this.dataset.url || window.location.pathname;
-		this.mode = this.dataset.mode || "append";
-		this.contentSelectors = (this.dataset.targets || "")
+		const _ = this;
+		_.currentPage = Number(_.getAttribute("current-page")) || 1;
+		_.hasNextPage = _.getAttribute("has-next-page") === "true";
+		_.baseUrl = _.getAttribute("url") || window.location.pathname;
+		_.mode = _.getAttribute("mode") || "append";
+		_.contentSelectors = (_.getAttribute("targets") || "")
 			.split(",")
 			.map((s) => s.trim())
 			.filter(Boolean);
-		this.appendFilter = this.dataset.appendFilter || "";
+		_.appendFilter = _.getAttribute("append-filter") || "";
 
 		/* recount items currently in the dom */
-		this.itemsShown = this.contentSelectors.reduce((sum, selector) => {
+		_.itemsShown = _.contentSelectors.reduce((sum, selector) => {
 			const el = document.querySelector(selector);
 			return el ? sum + el.children.length : sum;
 		}, 0);
@@ -79,30 +80,34 @@ class LoadContent extends HTMLElement {
 	 * @param {Object} opts
 	 */
 	reset(opts = {}) {
+		const _ = this;
 		if (opts.currentPage !== undefined)
-			this.dataset.currentPage = String(opts.currentPage);
+			_.setAttribute("current-page", String(opts.currentPage));
 		if (opts.hasNextPage !== undefined)
-			this.dataset.hasNextPage = String(opts.hasNextPage);
-		if (opts.url !== undefined) this.dataset.url = opts.url;
+			_.setAttribute("has-next-page", String(opts.hasNextPage));
+		if (opts.url !== undefined) _.setAttribute("url", opts.url);
 		if (opts.targets !== undefined) {
-			this.dataset.targets = Array.isArray(opts.targets)
-				? opts.targets.join(", ")
-				: String(opts.targets);
+			_.setAttribute(
+				"targets",
+				Array.isArray(opts.targets)
+					? opts.targets.join(", ")
+					: String(opts.targets),
+			);
 		}
-		if (opts.mode !== undefined) this.dataset.mode = opts.mode;
+		if (opts.mode !== undefined) _.setAttribute("mode", opts.mode);
 		if (opts.appendFilter !== undefined)
-			this.dataset.appendFilter = opts.appendFilter;
+			_.setAttribute("append-filter", opts.appendFilter);
 
-		this.readAttributes();
-		this.updateButtonState();
+		_.readAttributes();
+		_.updateButtonState();
 
-		this.dispatchEvent(
+		_.dispatchEvent(
 			new CustomEvent("onReset", {
 				bubbles: true,
 				detail: {
-					currentPage: this.currentPage,
-					hasNextPage: this.hasNextPage,
-					itemsShown: this.itemsShown,
+					currentPage: _.currentPage,
+					hasNextPage: _.hasNextPage,
+					itemsShown: _.itemsShown,
 				},
 			}),
 		);
@@ -136,34 +141,37 @@ class LoadContent extends HTMLElement {
 	 * click + fetch
 	 * ---------------------------------------------------------- */
 	async handleClick(evt) {
+		const _ = this;
 		evt.preventDefault();
-		if (!this.hasNextPage || this.isLoading) return;
+		if (!_.hasNextPage || _.isLoading) return;
 
-		this.isLoading = true;
-		this.updateButtonState();
+		_.isLoading = true;
+		_.updateButtonState();
 
 		try {
-			await this.fetchAndAppendNextPage();
+			await _.fetchAndAppendNextPage();
 		} catch (err) {
 			console.error("load-content: failed to load next page", err);
 		} finally {
-			this.isLoading = false;
-			this.updateButtonState();
+			_.isLoading = false;
+			_.updateButtonState();
 		}
 	}
 
 	/** builds ?page= param for the next request */
 	buildNextPageUrl() {
-		const url = new URL(this.baseUrl, window.location.origin);
-		if (this.mode === "append" && this.dataset.currentPage !== undefined) {
-			url.searchParams.set("page", String(this.currentPage + 1));
+		const _ = this;
+		const url = new URL(_.baseUrl, window.location.origin);
+		if (_.mode === "append" && _.getAttribute("current-page") !== null) {
+			url.searchParams.set("page", String(_.currentPage + 1));
 		}
 		return url.href;
 	}
 
 	/** fetches next page, injects html, updates state */
 	async fetchAndAppendNextPage() {
-		const response = await fetch(this.buildNextPageUrl(), {
+		const _ = this;
+		const response = await fetch(_.buildNextPageUrl(), {
 			credentials: "same-origin",
 		});
 		if (!response.ok) throw new Error(`http error ${response.status}`);
@@ -171,7 +179,7 @@ class LoadContent extends HTMLElement {
 		const html = await response.text();
 		const parsedDoc = new DOMParser().parseFromString(html, "text/html");
 
-		this.contentSelectors.forEach((selector) => {
+		_.contentSelectors.forEach((selector) => {
 			const sourceEl = parsedDoc.querySelector(selector);
 			const destinationEl = document.querySelector(selector);
 
@@ -184,55 +192,55 @@ class LoadContent extends HTMLElement {
 
 			const elementMode = destinationEl.getAttribute("data-load-content");
 			const shouldSwap =
-				elementMode === "swap" ||
-				(elementMode === null && this.mode === "swap");
+				elementMode === "swap" || (elementMode === null && _.mode === "swap");
 
 			if (shouldSwap) {
 				// swap entire content
 				destinationEl.innerHTML = sourceEl.innerHTML;
-				this.itemsShown = destinationEl.children.length; // keep count accurate
+				_.itemsShown = destinationEl.children.length; // keep count accurate
 			} else {
 				// gather children and optionally filter
 				let childrenToAppend = Array.from(sourceEl.children);
-				if (this.appendFilter) {
+				if (_.appendFilter) {
 					childrenToAppend = childrenToAppend.filter((child) =>
-						child.matches(this.appendFilter),
+						child.matches(_.appendFilter),
 					);
 				}
 				childrenToAppend.forEach((child) => {
 					destinationEl.appendChild(child);
-					this.itemsShown += 1;
+					_.itemsShown += 1;
 				});
 			}
 		});
 
 		/* update page counter */
-		this.currentPage += 1;
+		_.currentPage += 1;
 
 		/* read has-next-page flag from fetched markup */
 		const newLoadContentEl = parsedDoc.querySelector("load-content");
 		if (
 			newLoadContentEl &&
-			newLoadContentEl.dataset.hasNextPage !== undefined
+			newLoadContentEl.getAttribute("has-next-page") !== null
 		) {
-			this.hasNextPage = newLoadContentEl.dataset.hasNextPage === "true";
+			_.hasNextPage =
+				newLoadContentEl.getAttribute("has-next-page") === "true";
 		}
 
 		/* reflect new values outward */
-		this.dataset.currentPage = String(this.currentPage);
-		this.dataset.hasNextPage = String(this.hasNextPage);
+		_.setAttribute("current-page", String(_.currentPage));
+		_.setAttribute("has-next-page", String(_.hasNextPage));
 
 		/* refresh button */
-		this.updateButtonState();
+		_.updateButtonState();
 
 		/* fire event for observers */
-		this.dispatchEvent(
+		_.dispatchEvent(
 			new CustomEvent("onContentLoaded", {
 				bubbles: true,
 				detail: {
 					document: parsedDoc,
-					itemsShown: this.itemsShown,
-					currentPage: this.currentPage,
+					itemsShown: _.itemsShown,
+					currentPage: _.currentPage,
 				},
 			}),
 		);
@@ -243,3 +251,4 @@ class LoadContent extends HTMLElement {
 if (!customElements.get("load-content")) {
 	customElements.define("load-content", LoadContent);
 }
+//# sourceMappingURL=load-content.cjs.js.map
